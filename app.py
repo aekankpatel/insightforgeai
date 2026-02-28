@@ -293,10 +293,27 @@ footer { visibility: hidden; }
 
 
 # ─── Header ───────────────────────────────────────────────────────────────────
-st.markdown("""
-<div class="forge-header">
-    <h1>InsightForge AI</h1>
-    <p>Agentic Auto-EDA  ·  LLM-Powered Insights  ·  Automated Data Profiling</p>
+import base64, pathlib
+
+def _img_to_b64(path):
+    try:
+        return base64.b64encode(pathlib.Path(path).read_bytes()).decode()
+    except:
+        return None
+
+_logo_b64 = _img_to_b64("logo.png")
+_logo_html = (
+    f'<img src="data:image/png;base64,{_logo_b64}" style="height:72px;width:72px;'
+    f'object-fit:contain;border-radius:12px;margin-right:20px">' if _logo_b64 else ""
+)
+
+st.markdown(f"""
+<div class="forge-header" style="display:flex;align-items:center">
+    {_logo_html}
+    <div>
+        <h1 style="margin-bottom:6px">InsightForge AI</h1>
+        <p>Agentic Auto-EDA  ·  LLM-Powered Insights  ·  Automated Data Profiling</p>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -320,6 +337,12 @@ api_key = get_api_key()
 
 # ─── Sidebar ──────────────────────────────────────────────────────────────────
 with st.sidebar:
+    if _logo_b64:
+        st.markdown(f'<div style="text-align:center;padding:12px 0 4px 0">'
+                    f'<img src="data:image/png;base64,{_logo_b64}" '
+                    f'style="height:56px;width:56px;object-fit:contain;border-radius:10px"></div>',
+                    unsafe_allow_html=True)
+
     # Only show key input if not configured server-side
     if not api_key:
         st.markdown('<div class="section-title">API Key Required</div>', unsafe_allow_html=True)
@@ -620,6 +643,7 @@ if df is None:
         )
         if main_upload is not None:
             uploaded_file = main_upload
+            st.session_state["uploaded_filename"] = main_upload.name
             if main_upload.name.endswith(".csv"):
                 df = pd.read_csv(main_upload)
             else:
@@ -643,6 +667,22 @@ if df is None:
                     st.rerun()
 
 else:
+    # Show which dataset is loaded
+    _active = st.session_state.get("active_sample")
+    _uploaded_name = st.session_state.get("uploaded_filename")
+    _ds_label = _active if _active else (_uploaded_name if _uploaded_name else "Uploaded file")
+    st.markdown(f"""
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+  <span style="font-family:DM Mono,monospace;font-size:11px;color:#64748B;
+               text-transform:uppercase;letter-spacing:2px">Dataset</span>
+  <span style="font-family:DM Mono,monospace;font-size:13px;color:#00D4FF;
+               background:#1A2235;border:1px solid #1F2937;border-radius:6px;
+               padding:2px 10px">{_ds_label}</span>
+  <span style="font-family:DM Mono,monospace;font-size:11px;color:#64748B">
+    {df.shape[0]:,} rows · {df.shape[1]} cols</span>
+</div>
+""", unsafe_allow_html=True)
+
     num_numeric = len(df.select_dtypes(include=[np.number]).columns)
     num_cat = len(df.select_dtypes(exclude=[np.number]).columns)
     missing_pct = round(df.isna().sum().sum() / df.size * 100, 1)
