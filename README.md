@@ -1,4 +1,4 @@
-# ⚡ InsightForge AI
+# InsightForge AI
 
 **Agentic Auto-EDA system powered by Claude LLM — automated data profiling, anomaly detection, correlation analysis, and feature summarization.**
 
@@ -52,14 +52,14 @@ The app will open at `http://localhost:8501`
 ## Usage
 
 1. **Upload** a CSV/Excel file, or select a built-in sample dataset from the sidebar
-2. **Click** "⚡ Run InsightForge Analysis"
+2. **Click** "Run InsightForge Analysis"
 3. **Explore** results across 6 tabs:
-   - 📊 **Overview** — feature type sunburst + missing value chart
-   - 📈 **Distributions** — histograms + categorical bar charts
-   - 🔗 **Correlations** — interactive heatmap + strong pair table
-   - ⚠️ **Anomalies** — box plots + outlier summary table
-   - 🤖 **LLM Insights** — Claude-generated analysis cards
-   - 🗂 **Raw Data** — preview, describe(), dtypes, JSON export
+   - **Overview** — feature type sunburst + missing value chart
+   - **Distributions** — histograms + categorical bar charts
+   - **Correlations** — interactive heatmap + strong pair table
+   - **Anomalies** — box plots + outlier summary table
+   - **LLM Insights** — Claude-generated analysis cards
+   - **Raw Data** — preview, describe(), dtypes, JSON export
 
 ---
 
