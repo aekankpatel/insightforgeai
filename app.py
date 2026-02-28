@@ -489,7 +489,7 @@ def load_sample(name):
     elif name == "Wine Quality":
         np.random.seed(5)
         n = 1599
-        quality = np.random.choice([3,4,5,6,7,8], n, p=[0.006,0.033,0.426,0.399,0.124,0.011])
+        quality = np.random.choice([3,4,5,6,7,8], n, p=[0.006,0.033,0.425,0.399,0.124,0.013])
         return pd.DataFrame({
             "fixed_acidity": np.random.normal(8.3, 1.7, n).clip(4.6, 15.9),
             "volatile_acidity": np.random.normal(0.53, 0.18, n).clip(0.12, 1.58),
